@@ -8,10 +8,13 @@ import javax.swing.*;
 
 public class QuizLabel extends JPanel{	
 	private Font j1c = new Font("나눔고딕",Font.BOLD,180);
+	private Font j2c = new Font("나눔고딕",Font.BOLD,80);
 	private Font k1p = new Font("나눔바른펜",Font.BOLD,50);
 	private Font k2p = new Font("나눔바른펜",Font.BOLD,30);
 	//폰트설정
-	public JLabel jpCr, korPr, Mean;
+	public JLabel jpCr, korPr;
+	public JLabel jpCr2,Mean;
+	
 	Hiragana hrg = new Hiragana();
 	Gatakana gtk = new Gatakana();
 	
@@ -27,8 +30,8 @@ public class QuizLabel extends JPanel{
 		
 		jpCr = new JLabel();
 		jpCr.setForeground(Color.decode("#A13BDAF"));
-		jpCr.setFont(j1c);		jpCr.setBounds(10,10,300,200);
-		jpCr.setFont(j1c); this.add(jpCr);
+		jpCr.setFont(j1c);	jpCr.setBounds(10,10,300,200);
+		this.add(jpCr);
 		
 		korPr = new JLabel();
 		korPr.setForeground(new Color(40,40,40));
@@ -38,7 +41,21 @@ public class QuizLabel extends JPanel{
 		korPr.setBounds(100,200,170,70);
 		korPr.setFont(k1p); this.add(korPr);
 		
+		jpCr2 = new JLabel("<html>テツト</html>");
+		jpCr2.setForeground(Color.decode("#A13BDAF"));
+		jpCr2.setBounds(10,10,300,200); jpCr2.setHorizontalAlignment(SwingConstants.LEFT);jpCr2.setVerticalAlignment(SwingConstants.CENTER);
+		jpCr2.setFont(j2c); this.add(jpCr2);
 		
+		Mean = new JLabel("<html>테스트</html>");
+		Mean.setForeground(new Color(40,40,40));
+		Mean.setBounds(100,200,170,70);Mean.setHorizontalAlignment(SwingConstants.RIGHT);Mean.setVerticalAlignment(SwingConstants.BOTTOM);
+		Mean.setFont(k2p); this.add(Mean);
+		
+		
+		jpCr.setVisible(false);
+		korPr.setVisible(false);
+		jpCr2.setVisible(false);
+		Mean.setVisible(false);
 		//Numbers Mode
 		
 	}
@@ -91,6 +108,21 @@ public class QuizLabel extends JPanel{
 			break;
 		}
 		repaint();
+	}
+	
+	public void hide(Mode m) {
+		switch(m){
+		case Hiragana:
+		case Gatakana:
+			this.setVisible(true); jpCr.setVisible(true); korPr.setVisible(true);
+			//TODO
+			break;
+		case March11:
+			break;
+		default:
+			break;
+		}
+		
 	}
 	
 	public void TrueOrFalse(String answer) {//정 오답 체크
