@@ -5,7 +5,7 @@ class Gt{
 	
 	Gt(String Char, String Kor){
 		_Char = Char; _Kor = Kor;
-	}
+	} 
 }
 
 public class Gatakana {
