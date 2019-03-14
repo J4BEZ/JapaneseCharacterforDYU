@@ -320,7 +320,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 		
 		/////////////////////////////////////////////////////////////
 		modeChecking(HideButtonforMenu);
-		QuizorNote(quizmode);
+		QuizorNote(quizmode,m);
 		inc.setText(ql.WhichAnswer);
 		CorrectPercentage();
 		/////////////////////////////////////////////////////////////
@@ -335,7 +335,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			QorS.setSelected(false);
 			Next.setVisible(false);
 			quizmode = false;
-			QuizorNote(quizmode);
+			QuizorNote(quizmode,m);
 			ql.ModeChecking(m,0);
 			
 		}else {
@@ -347,7 +347,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 	/////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////
-	public void QuizorNote(boolean _quiz) {//퀴즈 혹은 단어장
+	public void QuizorNote(boolean _quiz,Mode m) {//퀴즈 혹은 단어장
 		if(_quiz) {
 			correcT.setVisible(true);
 			CrctPer.setVisible(true);
@@ -358,7 +358,9 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			ans.requestFocusInWindow();
 			identify.setVisible(true);
 			if(sequence!=rand.length) {
+			
 				ql.korPr.setVisible(false);
+				ql.Mean.setVisible(false);
 				progress.setVisible(true);
 				progress.setText(sequence+"/"+(rand.length-1));
 			}
@@ -375,7 +377,15 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			ans.setVisible(false);
 			ans.setText(null);
 			identify.setVisible(false);
-			ql.korPr.setVisible(true);
+			if(m==Mode.Hiragana||m==Mode.Gatakana) {
+				ql.korPr.setVisible(true);
+			}else {
+				ql.korPr.setVisible(false);
+			}if(m==Mode.March11) {
+				ql.Mean.setVisible(true);
+			}else {
+				ql.Mean.setVisible(false);
+			}
 			Next.setEnabled(true);
 			jcb.setEnabled(true);
 			progress.setVisible(false);
@@ -449,7 +459,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 				_r = 73;
 				break;
 			case March11:
-				_r = 73;
+				_r = 20;
 				break;
 			default:
 				_r = 1;
@@ -467,6 +477,14 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			}
 		}
 		r[_r]=_r;//끝 용도
+		switch(m) {
+		case March11:
+			ql.forRandomquiz = r;
+			break;
+		default:
+			ql.forRandomquiz = null;
+			break;
+		}
 		return r;
 	}
 	/////////////////////////////////////////////////////////////
@@ -481,6 +499,9 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			case Gatakana:
 				r = (int)(Math.random()*73);
 				break;
+			case March11:
+				r = (int)(Math.random()*20);
+				break;
 			default:
 				r = 0;
 				break;
@@ -491,6 +512,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 			switch(m){
 			case Hiragana:
 			case Gatakana:
+			case March11:
 				if(rand!=null) {
 					if(sequence<rand.length) {
 						r = rand[sequence++];
@@ -498,14 +520,14 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 					if(sequence==rand.length) {//TODO 퀴즈가 끝난다면?
 						ql.setVisible(false);
 						ql.jpCr.setText(String.format("정답률: %.1f",ql.CorctPer)+"%");
+						ql.jpCr2.setText(String.format("정답률: %.1f",ql.CorctPer)+"%");
 						ql.jpCr.setFont(new Font("나눔바른펜",Font.BOLD,50));
-						ql.jpCr.setForeground(c);
+						ql.jpCr2.setFont(new Font("나눔바른펜",Font.BOLD,50));
+						ql.jpCr.setForeground(c);ql.jpCr2.setForeground(c);
 						
 						ql.korPr.setText("점수: "+grade);
 						ql.korPr.setForeground(c);
 						ql.korPr.setVisible(true);
-						ql.setVisible(true);
-						repaint();
 						
 						Next.setText("체크박스를 해제해주세요!");
 						Next.setEnabled(false);
@@ -537,7 +559,7 @@ public class Quiz_Board extends JFrame implements ActionListener, MouseListener{
 		submit = ans.getText().trim();
 		//trim == 앞뒤의 공백제거 
 		ans.setText("");
-		ql.TrueOrFalse(submit);
+		ql.TrueOrFalse(submit,m,sequence);
 	
 		
 		//제출답과 일치한지 아닌지 판별
